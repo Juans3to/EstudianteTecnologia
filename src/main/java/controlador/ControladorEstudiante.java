@@ -15,7 +15,7 @@ import Vista.VistaEstudiante;
 
 public class ControladorEstudiante {
     private final VistaEstudiante vista;
-    private Estudiante[] arregloEstudiantes;
+    private Estudiante[] arregloEstudiantes; // Uso de arreglos solicitado
 
     public ControladorEstudiante(VistaEstudiante vista) {
         this.vista = vista;
@@ -24,10 +24,10 @@ public class ControladorEstudiante {
     public void iniciar() {
         int cantidad = vista.solicitarCantidadEstudiantes();
         
-        // Inicializa el arreglo con el tamaño 'n' ingresado
+        // Inicializamos el arreglo con el tamaño 'n' ingresado
         arregloEstudiantes = new Estudiante[cantidad];
 
-        // Se llena el arreglo
+        // Llenado del arreglo
         for (int i = 0; i < arregloEstudiantes.length; i++) {
             int codigo = vista.solicitarCodigo(i + 1);
             String nombre = vista.solicitarNombre();
@@ -38,11 +38,16 @@ public class ControladorEstudiante {
             arregloEstudiantes[i] = new Estudiante(codigo, nombre, notaDesarrollo, notaMatematica);
         }
 
-        generarReporte();
+        generarReporte("REPORTE INICIAL DE ESTUDIANTES");
 
         // Estudiantes cuya definitiva supera la nota límite
         double notaLimite = vista.solicitarNotaLimite();
         mostrarEstudiantesSuperioresALimite(notaLimite);
+
+        // Incremento de la nota de desarrollo y reporte actualizado
+        double incremento = vista.solicitarIncremento();
+        incrementarNotasDesarrollo(incremento);
+        generarReporte("REPORTE DESPUÉS DEL INCREMENTO");
     }
 
     // No retorna nada: solo muestra en pantalla los estudiantes con definitiva superior a notaLimite
@@ -69,8 +74,15 @@ public class ControladorEstudiante {
         vista.mostrarMensaje(reporte);
     }
 
-    private void generarReporte() {
-        String reporte = "--- REPORTE FINAL DE ESTUDIANTES ---\n\n";
+    // No retorna nada: incrementa la nota de desarrollo de todos los estudiantes
+    private void incrementarNotasDesarrollo(double incremento) {
+        for (int i = 0; i < arregloEstudiantes.length; i++) {
+            arregloEstudiantes[i].incrementarNotaDesarrollo(incremento);
+        }
+    }
+
+    private void generarReporte(String titulo) {
+        String reporte = "--- " + titulo + " ---\n\n";
 
         for (int i = 0; i < arregloEstudiantes.length; i++) {
             Estudiante est = arregloEstudiantes[i];
