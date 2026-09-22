@@ -15,9 +15,17 @@ import javax.swing.JOptionPane;
 public class VistaEstudiante {
 
     public int solicitarCantidadEstudiantes() {
+    int cantidad = 0;
+    // Ciclo para garantizar que el número de estudiantes sea mayor a 0
+    while (cantidad <= 0) {
         String input = JOptionPane.showInputDialog(null, "¿Cuántos estudiantes de Tecnología desea registrar?", "Registro", JOptionPane.QUESTION_MESSAGE);
-        return Integer.parseInt(input);
+        cantidad = Integer.parseInt(input);
+        if (cantidad <= 0) {
+            mostrarMensaje("Error: El número de estudiantes debe ser mayor a 0.");
+        }
     }
+    return cantidad;
+}
 
     public int solicitarCodigo(int numeroEstudiante) {
         int codigo = 0;
