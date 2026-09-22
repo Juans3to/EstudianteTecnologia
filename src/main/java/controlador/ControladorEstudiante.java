@@ -14,8 +14,8 @@ import Modelo.Estudiante;
 import Vista.VistaEstudiante;
 
 public class ControladorEstudiante {
-    private VistaEstudiante vista;
-    private Estudiante[] arregloEstudiantes; // Uso de arreglos solicitado
+    private final VistaEstudiante vista;
+    private Estudiante[] arregloEstudiantes;
 
     public ControladorEstudiante(VistaEstudiante vista) {
         this.vista = vista;
@@ -24,10 +24,10 @@ public class ControladorEstudiante {
     public void iniciar() {
         int cantidad = vista.solicitarCantidadEstudiantes();
         
-        // Inicializamos el arreglo con el tamaño 'n' ingresado
+        // Inicializa el arreglo con el tamaño 'n' ingresado
         arregloEstudiantes = new Estudiante[cantidad];
 
-        // Llenado del arreglo
+        // Se llena el arreglo
         for (int i = 0; i < arregloEstudiantes.length; i++) {
             int codigo = vista.solicitarCodigo(i + 1);
             String nombre = vista.solicitarNombre();
@@ -39,6 +39,34 @@ public class ControladorEstudiante {
         }
 
         generarReporte();
+
+        // Estudiantes cuya definitiva supera la nota límite
+        double notaLimite = vista.solicitarNotaLimite();
+        mostrarEstudiantesSuperioresALimite(notaLimite);
+    }
+
+    // No retorna nada: solo muestra en pantalla los estudiantes con definitiva superior a notaLimite
+    private void mostrarEstudiantesSuperioresALimite(double notaLimite) {
+        String reporte = "--- ESTUDIANTES CON DEFINITIVA SUPERIOR A " + String.format("%.1f", notaLimite) + " ---\n\n";
+        boolean hayEstudiantes = false;
+
+        for (int i = 0; i < arregloEstudiantes.length; i++) {
+            Estudiante est = arregloEstudiantes[i];
+
+            if (est.calcularDefinitiva() > notaLimite) {
+                reporte += "Código: " + est.getCodigo() + "\n";
+                reporte += "Nombre: " + est.getNombre() + "\n";
+                reporte += "Nota Definitiva: " + String.format("%.2f", est.calcularDefinitiva()) + "\n";
+                reporte += "----------------------------------------\n";
+                hayEstudiantes = true;
+            }
+        }
+
+        if (!hayEstudiantes) {
+            reporte += "Ningún estudiante supera la nota límite.\n";
+        }
+
+        vista.mostrarMensaje(reporte);
     }
 
     private void generarReporte() {
