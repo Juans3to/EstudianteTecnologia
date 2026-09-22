@@ -8,9 +8,8 @@ package Modelo;
  *
  * @author juans
  */
-
-
 public class Estudiante {
+
     private int codigo;
     private String nombre;
     private double notaDesarrollo;
@@ -60,6 +59,15 @@ public class Estudiante {
     // Reglas de negocio
     public double calcularDefinitiva() {
         return (this.notaDesarrollo * 0.6) + (this.notaMatematica * 0.4);
+    }
+
+    // No retorna nada: suma el incremento a la nota de desarrollo sin pasar de 5.0
+    public void incrementarNotaDesarrollo(double incremento) {
+        double nuevaNota = this.notaDesarrollo + incremento;
+        if (nuevaNota > 5.0) {
+            nuevaNota = 5.0;
+        }
+        this.notaDesarrollo = nuevaNota;
     }
 
     public String obtenerEstadoAprobacion() {
