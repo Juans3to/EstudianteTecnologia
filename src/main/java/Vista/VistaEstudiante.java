@@ -60,6 +60,19 @@ public class VistaEstudiante {
         return notaLimite;
     }
 
+    public double solicitarIncremento() {
+        double incremento = -1;
+        // Ciclo para garantizar que el incremento esté entre 0.0 y 0.5
+        while (incremento < 0.0 || incremento > 0.5) {
+            String input = JOptionPane.showInputDialog(null, "Ingrese el incremento para la nota de desarrollo (entre 0.0 y 0.5):");
+            incremento = Double.parseDouble(input.replace(",", "."));
+            if (incremento < 0.0 || incremento > 0.5) {
+                mostrarMensaje("Error: El incremento debe estar entre 0.0 y 0.5.");
+            }
+        }
+        return incremento;
+    }
+
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(null, mensaje, "Información", JOptionPane.INFORMATION_MESSAGE);
     }
